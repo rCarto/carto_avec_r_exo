@@ -1587,27 +1587,33 @@ div.tocify {
 
 <div id="traitement-de-données-spatiales" class="section level1">
 <h1><span class="header-section-number">1</span> Traitement de données spatiales</h1>
-<div id="créer-un-projet-rstudio" class="section level2">
-<h2><span class="header-section-number">1.1</span> Créer un projet RStudio</h2>
-<p>Créez un projet avant de démarrer l’exercice. Il s’agit d’une bonne pratique qui vous facilitera la tâche. Cela améliore l’organisation et la portabilité de votre travail.</p>
-</div>
-<div id="télécharger-la-couche-des-géométries-des-communes-doccitanie" class="section level2">
-<h2><span class="header-section-number">1.2</span> Télécharger la couche des géométries des communes d’Occitanie</h2>
-<p>Une couche géographique des communes d’Occitanie au format <strong>gpkg</strong> est disponible ici :<br />
-///insert link///<br />
-Téléchargez et décompressez la dans un dossier data placé dans votre projet.</p>
-<p>Source : ADMIN EXPRESS COG édition 2019 (IGN, <a href="http://professionnels.ign.fr/adminexpress" class="uri">http://professionnels.ign.fr/adminexpress</a>)</p>
-</div>
-<div id="charger-la-couche-géographique-dans-r" class="section level2">
-<h2><span class="header-section-number">1.3</span> Charger la couche géographique dans R</h2>
+<div id="préparer-son-environement-de-travail" class="section level2">
+<h2><span class="header-section-number">1.1</span> Préparer son environement de travail</h2>
 <ul>
-<li>Créez un fichier <strong>exo1.R</strong> à la racine de votre projet.</li>
+<li>Créez un projet RStudio.<br />
+Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agit d’une bonne pratique qui vous facilitera la tâche. Cela améliore l’organisation et la portabilité de votre travail.</li>
+<li>Dans le projet, créez un dossier <strong>data</strong>.</li>
+<li>Téléchargez les données<br />
+Un fichier contenant les polygones des communes d’Occitanie au format <strong>gpkg</strong> est disponible ici : <strong>insert link</strong>. Il faut télécharger le fichier puis le placer dans le dossier <strong>data</strong> que vous venez de créer.</li>
+<li>Créez un fichier <strong>exo1.R</strong> et enregistrez le à la racine du projet.</li>
+</ul>
+<p>Votre projet RStudio doit être structuré de la manière suivante :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">├── <span class="ex">data</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">│   └── <span class="ex">Occitanie.gpkg</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">├── <span class="ex">exo1.R</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">└── <span class="ex">exercice.Rproj</span></a></code></pre></div>
+<p>Vous devez enregistrer votre script régulièrement dans le fichier <strong>exo1.R</strong>.</p>
+<p><em>Source du fichier <strong>Occitanie.gpkg</strong> : <a href="IGN,%20http://professionnels.ign.fr/adminexpress">ADMIN EXPRESS COG édition 2019</a></em></p>
+</div>
+<div id="charger-une-couche-géographique" class="section level2">
+<h2><span class="header-section-number">1.2</span> Charger une couche géographique</h2>
+<ul>
 <li>Chargez la couche géographique des communes d’Occitanie en utilisant le package <code>sf</code> et la fonction <code>st_read()</code>.</li>
 <li>Vérifiez le système de projection avec <code>st_crs()</code>. S’agit-il de données projetée ? Si ce n’est pas le cas, transformez la couche des communes dans la projection française (Lambert 93) avec la fonction <code>st_transform()</code>.</li>
 </ul>
 </div>
-<div id="création-dune-nouvelle-couche---sélection-par-attributs" class="section level2">
-<h2><span class="header-section-number">1.4</span> Création d’une nouvelle couche - Sélection par attributs</h2>
+<div id="réaliser-une-sélection-par-attributs" class="section level2">
+<h2><span class="header-section-number">1.3</span> Réaliser une sélection par attributs</h2>
 <ul>
 <li>Séléctionnez toutes les communes de la Haute-Garonne.</li>
 <li>Enregistrez votre séléction dans un nouvel objet nommé <strong>com31</strong></li>
@@ -1615,30 +1621,30 @@ Téléchargez et décompressez la dans un dossier data placé dans votre projet.
 </ul>
 <p>Pour connaitre la liste de tous les noms ou code de région on peut utiliser la fonction <code>unique()</code>.</p>
 </div>
-<div id="création-dune-couche---fusion-dentités-géographiques" class="section level2">
-<h2><span class="header-section-number">1.5</span> Création d’une couche - Fusion d’entités géographiques</h2>
+<div id="fusionner-des-entités" class="section level2">
+<h2><span class="header-section-number">1.4</span> Fusionner des entités</h2>
 <ul>
 <li>Fusionnez les communes de la région en un seul polygone (<strong>reg76</strong>), utilisez la fonction <code>st_union ()</code>.</li>
 <li>Créez la couche géograpique des départements de la région (<strong>dep76</strong>), utilisez la fonction <code>aggregate()</code> pour regrouper les polygones et calculer les sommes des populations communales.</li>
 <li>Affichez les résultats (communes, départements et région)</li>
 </ul>
 </div>
-<div id="création-dune-nouvelle-couche---zone-tampon" class="section level2">
-<h2><span class="header-section-number">1.6</span> Création d’une nouvelle couche - Zone tampon</h2>
+<div id="créer-une-zone-tampon" class="section level2">
+<h2><span class="header-section-number">1.5</span> Créer une zone tampon</h2>
 <ul>
-<li>Créez une zone tampon d’une distance de 10 km autour des limites de la commune de Toulouse (INSEE_COM = 31555) avec <code>st_buffer()</code>.</li>
+<li>Créez une zone tampon d’une distance de 10 km autour des limites de la commune de Toulouse avec <code>st_buffer()</code>. Quel est le code INSEE de la commune de Toulouse?</li>
 </ul>
 </div>
-<div id="création-dune-nouvelle-couche---sélection-par-localisation" class="section level2">
-<h2><span class="header-section-number">1.7</span> Création d’une nouvelle couche - Sélection par localisation</h2>
+<div id="réaliser-un-sélection-par-localisation" class="section level2">
+<h2><span class="header-section-number">1.6</span> Réaliser un sélection par localisation</h2>
 <p>Déterminez quelles communes de la Haute-Garonne intersectent le buffer créé.</p>
 <ul>
 <li>Utilisez la fonction <code>st_intersects()</code>.</li>
 <li>Inserez directement le resultat comme variable de l’objet <strong>dep31</strong>.</li>
 </ul>
 </div>
-<div id="affichage-de-couches-géographiques" class="section level2">
-<h2><span class="header-section-number">1.8</span> Affichage de couches géographiques</h2>
+<div id="afficher-des-couches-géographiques" class="section level2">
+<h2><span class="header-section-number">1.7</span> Afficher des couches géographiques</h2>
 <p>Affichez/superposez toutes les couches géographiques créees :</p>
 <ul>
 <li>Les communes de la Haute-Garonne</li>
@@ -1650,31 +1656,32 @@ Téléchargez et décompressez la dans un dossier data placé dans votre projet.
 </ul>
 <p>Jouez sur les styles pour les différencier…</p>
 </div>
-<div id="création-dune-couche-de-point---a-partir-des-longitudes-et-latitudes" class="section level2">
-<h2><span class="header-section-number">1.9</span> Création d’une couche de point - A partir des longitudes et latitudes</h2>
+<div id="créer-une-couche-de-points" class="section level2">
+<h2><span class="header-section-number">1.8</span> Créer une couche de points</h2>
 <p>Créer un objet <code>sf</code> (points) contenant la localisation de la préfécture de région. Vous pouvez récupérer la longitude et la latitude sur Google Map ou OSM Créer un point avec <code>st_points()</code>, puis un objet <code>sfc</code> avec avec <code>st_sfc()</code> et finalement un objet <code>sf</code> avec <code>st_sf()</code></p>
 </div>
-<div id="calcul-dune-matrice-de-distances" class="section level2">
-<h2><span class="header-section-number">1.10</span> Calcul d’une matrice de distances</h2>
+<div id="calculer-des-distances" class="section level2">
+<h2><span class="header-section-number">1.9</span> Calculer des distances</h2>
 <p>Calculez une matrice de distance entre la préfecture et les centroïdes des communes du département Haute-Garonne. Ajouter cette distance dans une nouvelle colonne <strong>dist_pref</strong> dans <strong>com31</strong>. Pour cela, utiliser les fonction <code>st_centroid()</code> et <code>st_distance()</code>. N’oubliez pas de vérifier les projections utilisées avec <code>st_crs()</code>, au besoin modifiez les avec <code>st_transform()</code>.</p>
 </div>
-<div id="cartographier-une-variable-avec-sf" class="section level2">
-<h2><span class="header-section-number">1.11</span> Cartographier une variable avec <code>sf</code></h2>
+<div id="cartographier-une-variable" class="section level2">
+<h2><span class="header-section-number">1.10</span> Cartographier une variable</h2>
 <p>Cartographiez distance de chaque commune du département à la préfecture avec la fonction <code>plot()</code></p>
+<hr />
 </div>
 </div>
 <div id="cartographie-thématique" class="section level1">
 <h1><span class="header-section-number">2</span> Cartographie thématique</h1>
-<div id="charger-une-couche-géographique-et-des-données-statistiques" class="section level2">
-<h2><span class="header-section-number">2.1</span> Charger une couche géographique et des données statistiques</h2>
+<div id="charger-des-données-statistiques" class="section level2">
+<h2><span class="header-section-number">2.1</span> Charger des données statistiques</h2>
 <ul>
 <li>Charger la couche géographique des communes d’Occitanie (<strong>data/Occitanie.gpkg</strong>). Utilisez le package <code>sf</code> et la fonction <code>st_read()</code> pour importer les données.</li>
 <li>Vérifiez le système de projection avec <code>st_crs()</code></li>
 <li>Charger les fichier de données <strong>data/base_cc_comparateur.xls</strong> fournie par l’INSEE. Utilisez le package <code>readxl</code> et la fonction <code>read_excel()</code> pour ouvrir la table de données correctement. Importer la table dans un objet nommé <strong>occ_df</strong></li>
 </ul>
 </div>
-<div id="création-dune-nouvelle-couche---sélection-par-attributs-1" class="section level2">
-<h2><span class="header-section-number">2.2</span> Création d’une nouvelle couche - Sélection par attributs</h2>
+<div id="réaliser-une-sélection-par-attributs-1" class="section level2">
+<h2><span class="header-section-number">2.2</span> Réaliser une sélection par attributs</h2>
 <p>Créez un nouvel objet <code>sf</code> à partir d’une séléction par attribut`:</p>
 <ul>
 <li>Séléctionnez toutes les communes d’un seul département (ne choisissez pas la Haute-Garonne).</li>
@@ -1683,14 +1690,14 @@ Téléchargez et décompressez la dans un dossier data placé dans votre projet.
 </ul>
 <p>Pour connaitre la liste de tous les noms ou code de région voir la fonction <code>unique()</code></p>
 </div>
-<div id="réaliser-une-jointure-avec-la-table-de-données" class="section level2">
-<h2><span class="header-section-number">2.3</span> Réaliser une jointure avec la table de données</h2>
+<div id="réaliser-une-jointure" class="section level2">
+<h2><span class="header-section-number">2.3</span> Réaliser une jointure</h2>
 <ul>
 <li>Joignez la table de données INSEE avec la couche gégographique des communes de votre département séléctionné. Utilisez la fonction <code>merge()</code>. Quel est l’identifiant commun entre la table géo et la table attributaire?</li>
 </ul>
 </div>
-<div id="carto" class="section level2">
-<h2><span class="header-section-number">2.4</span> Réalisation de cartes thématiques et évaluation</h2>
+<div id="réaliser-des-cartes-thématiques" class="section level2">
+<h2><span class="header-section-number">2.4</span> Réaliser des cartes thématiques</h2>
 <p>Réalisez huit cartes thématiques finalisées.</p>
 <p>Chacune des cartes devra comprendre les éléments d’habillage et de mise en page nécessaires leur compréhension (titre, légende, sources…)</p>
 <p>Parmi ces huits cartes deux échelles différentes (échelle de la région, échelle d’un département) et deux découpages territoriaux différents (les communes, les départements) doivent être utilisés.</p>
@@ -1716,11 +1723,11 @@ Téléchargez et décompressez la dans un dossier data placé dans votre projet.
 <h2><span class="header-section-number">2.5</span> Évaluation</h2>
 <p>Vous devrez nous rendre pour le <strong>vendredi 7 février 2020</strong> un script permettant de construire ces huit cartes (#carto) dans un fichier dont le nom est constitué de votre prénom et de votre nom (<strong>Prenom_Nom.R</strong>).<br />
 Votre script doit pouvoir fonctionner dans un projet RStudio structuré de la manière suivante :</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">├── <span class="ex">data</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">│   ├── <span class="ex">base_cc_comparateur.xls</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">│   └── <span class="ex">Occitanie.gpkg</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">├── <span class="ex">Prenom_Nom.R</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">└── <span class="ex">rendu.Rproj</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">├── <span class="ex">data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">│   ├── <span class="ex">base_cc_comparateur.xls</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">│   └── <span class="ex">Occitanie.gpkg</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">├── <span class="ex">Prenom_Nom.R</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">└── <span class="ex">rendu.Rproj</span></a></code></pre></div>
 <p>Vous serez évalués de la manière suivante :</p>
 <ul>
 <li>2 points par cartes (choix sémiologiques, traitement des données en amont…),</li>

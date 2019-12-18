@@ -26,27 +26,34 @@ knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
 
 # Traitement de données spatiales
 
-## Créer un projet RStudio
+## Préparer son environement de travail
 
-Créez un projet avant de démarrer l'exercice.
+* Créez un projet RStudio.  
+Dans RStudio créez un projet et nommé le **exercice**. 
 Il s'agit d'une bonne pratique qui vous facilitera la tâche.
 Cela améliore l'organisation et la portabilité de votre travail.
+* Dans le projet, créez un dossier **data**.
+* Téléchargez les données  
+Un fichier contenant les polygones des communes d'Occitanie au format **gpkg** 
+est disponible ici : **insert link**. Il faut télécharger le fichier puis le 
+placer dans le dossier **data** que vous venez de créer. 
+* Créez un fichier **exo1.R** et enregistrez le à la racine du projet. 
+
+Votre projet RStudio doit être structuré de la manière suivante :
+``` bash
+├── data
+│   └── Occitanie.gpkg
+├── exo1.R
+└── exercice.Rproj
+```
+Vous devez enregistrer votre script régulièrement dans le fichier **exo1.R**.
 
 
-## Télécharger la couche des géométries des communes d'Occitanie
-
-Une couche géographique des communes d'Occitanie au format **gpkg** est 
-disponible ici :  
-///insert link///  
-Téléchargez et décompressez la dans un dossier data placé dans votre projet.  
-
-Source : ADMIN EXPRESS COG édition 2019 (IGN, 
-http://professionnels.ign.fr/adminexpress)
+*Source du fichier **Occitanie.gpkg** : [ADMIN EXPRESS COG édition 2019](IGN, http://professionnels.ign.fr/adminexpress)*
 
 
-## Charger la couche géographique dans R
+## Charger une couche géographique
 
-* Créez un fichier **exo1.R** à la racine de votre projet. 
 * Chargez la couche géographique des communes d'Occitanie en utilisant 
 le package `sf` et la fonction `st_read()`. 
 * Vérifiez le système de projection avec `st_crs()`. S'agit-il de données 
@@ -61,7 +68,7 @@ occ <- st_transform(x = occ_raw, crs = 2154)
 ```
 
 
-## Création d'une nouvelle couche - Sélection par attributs
+## Réaliser une sélection par attributs
 
 * Séléctionnez toutes les communes de la Haute-Garonne. 
 * Enregistrez votre séléction dans un nouvel objet nommé **com31**
@@ -76,7 +83,7 @@ com31 <- occ[occ$INSEE_DEP == "31", ]
 plot(st_geometry(com31))
 ```
 
-## Création d'une couche - Fusion d'entités géographiques
+## Fusionner des entités
 
 * Fusionnez les communes de la région en un seul polygone (**reg76**), utilisez 
 la fonction `st_union ()`. 
@@ -93,10 +100,11 @@ plot(st_geometry(dep76), col = NA, border = "lightblue2", lwd = 1, add = TRUE)
 plot(reg76, col = NA, border = "lightblue3", lwd = 2, add = TRUE)
 ```
 
-## Création d'une nouvelle couche - Zone tampon
+## Créer une zone tampon
 
 * Créez une zone tampon d'une distance de 10 km autour des limites de la commune 
-de Toulouse (INSEE_COM = 31555) avec `st_buffer()`.
+de Toulouse avec `st_buffer()`. Quel est le code INSEE de la commune de 
+Toulouse?
 
 ```{r}
 toulouse <- com31[com31$INSEE_COM == "31555",]
@@ -109,7 +117,7 @@ plot(st_geometry(toulouse_buffer), col = NA, lwd = 3, border = "red",
 ```
 
 
-## Création d'une nouvelle couche - Sélection par localisation
+## Réaliser un sélection par localisation
 
 Déterminez quelles communes de la Haute-Garonne intersectent le buffer créé.
 
@@ -123,7 +131,7 @@ head(com31, 2)
 ```
 
 
-## Affichage de couches géographiques
+## Afficher des couches géographiques
 
 Affichez/superposez toutes les couches géographiques créees :
 
@@ -150,7 +158,7 @@ plot(st_geometry(dep76), col = NA, border = "grey50", add = TRUE)
 ```
 
 
-## Création d'une couche de point - A partir des longitudes et latitudes
+## Créer une couche de points 
 
 Créer un objet `sf` (points) contenant la localisation de la préfécture de 
 région.
@@ -170,7 +178,7 @@ pref
 ```
 
 
-## Calcul d'une matrice de distances
+## Calculer des distances
 
 Calculez une matrice de distance entre la préfecture et les centroïdes des
 communes du département Haute-Garonne. Ajouter cette distance dans une nouvelle 
@@ -193,7 +201,7 @@ head(com31, 2)
 ```
 
 
-## Cartographier une variable avec `sf`
+## Cartographier une variable
 
 Cartographiez distance de chaque commune du département à la préfecture avec la 
 fonction `plot()`
@@ -221,10 +229,11 @@ knitr::knit_hooks$set(nm = function(before, options, envir){
 knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
 ```
 
+*** 
 
 # Cartographie thématique
 
-## Charger une couche géographique et des données statistiques
+## Charger des données statistiques
 
 * Charger la couche géographique des communes d'Occitanie
 (**data/Occitanie.gpkg**). Utilisez le package `sf` et la fonction `st_read()` 
@@ -248,7 +257,7 @@ head(occ_df, 2)
 ```
 
 
-## Création d'une nouvelle couche - Sélection par attributs
+## Réaliser une sélection par attributs
 
 Créez un nouvel objet `sf` à partir d'une séléction par attribut`:
 
@@ -270,7 +279,7 @@ plot(st_geometry(com46))
  
 
 
-## Réaliser une jointure avec la table de données
+## Réaliser une jointure
 
 * Joignez la table de données INSEE avec la couche gégographique des communes 
  de votre département séléctionné. Utilisez la fonction `merge()`. Quel est 
@@ -286,7 +295,7 @@ head(com46, 2)
 
 
 
-## Réalisation de cartes thématiques et évaluation {#carto}
+## Réaliser des cartes thématiques
 
 Réalisez huit cartes thématiques finalisées.   
 
