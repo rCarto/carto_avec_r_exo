@@ -211,6 +211,17 @@ plot(st_geometry(pref), pch = 20, col = "red", add = TRUE )
 ```
 
 
+```{r setup2, include=FALSE}
+
+knitr::knit_hooks$set(nm = function(before, options, envir){
+  if (before){
+    par(mar=c(0,0,0,0))
+  } 
+})
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+```
+
+
 # Cartographie thématique
 
 ## Charger une couche géographique et des données statistiques
