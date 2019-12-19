@@ -49,7 +49,7 @@ Votre projet RStudio doit être structuré de la manière suivante :
 Vous devez enregistrer votre script régulièrement dans le fichier **exo1.R**.
 
 
-*Source du fichier **Occitanie.gpkg** : [ADMIN EXPRESS COG édition 2019](IGN, http://professionnels.ign.fr/adminexpress)*
+*Source du fichier **Occitanie.gpkg** : [ADMIN EXPRESS COG édition 2019, IGN](http://professionnels.ign.fr/adminexpress)*
 
 
 ## Charger une couche géographique
