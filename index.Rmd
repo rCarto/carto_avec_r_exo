@@ -21,7 +21,7 @@ knitr::knit_hooks$set(nm = function(before, options, envir){
     par(mar=c(0,0,0,0))
   } 
 })
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, cache = TRUE, nm=TRUE)
 ```
 
 # Traitement de données spatiales
@@ -33,24 +33,28 @@ Dans RStudio créez un projet et nommé le **exercice**.
 Il s'agit d'une bonne pratique qui vous facilitera la tâche.
 Cela améliore l'organisation et la portabilité de votre travail.
 * Dans le projet, créez un dossier **data**.
-* Téléchargez les données  
-Un fichier contenant les polygones des communes d'Occitanie au format **gpkg** 
-est disponible ici : **insert link**. Il faut télécharger le fichier puis le 
-placer dans le dossier **data** que vous venez de créer. 
+* Téléchargez les données :  
+    * Un fichier contenant les polygones des communes d'Occitanie au format 
+    **gpkg** est disponible ici : **Occitanie.gpkg - insert link**. Il faut télécharger le 
+    fichier puis le placer dans le dossier **data** que vous venez de créer. 
+    * Un fichier contenant des données socio-démographiques sur les communes de
+    France est disponible ici : **base_cc_comparateur.xls - insert link**. Il faut le télécharger et le mettre également dans le même dossier **data**.  
 * Créez un fichier **exo1.R** et enregistrez le à la racine du projet. 
 
 Votre projet RStudio doit être structuré de la manière suivante :
 ``` bash
 ├── data
+│   └── base_cc_comparateur.xls
 │   └── Occitanie.gpkg
 ├── exo1.R
 └── exercice.Rproj
 ```
 Vous devez enregistrer votre script régulièrement dans le fichier **exo1.R**.
 
-
-*Source du fichier **Occitanie.gpkg** : [ADMIN EXPRESS COG édition 2019, IGN](http://professionnels.ign.fr/adminexpress)*
-
+<small>
+*Source du fichier **Occitanie.gpkg** : [ADMIN EXPRESS COG édition 2019, IGN](http://professionnels.ign.fr/adminexpress)*  
+*Source du fichier **base_cc_comparateur.xls** : [Base comparateur de territoires 2019, INSEE](https://www.insee.fr/fr/statistiques/2521169)*
+</small>
 
 ## Charger une couche géographique
 
@@ -58,7 +62,8 @@ Vous devez enregistrer votre script régulièrement dans le fichier **exo1.R**.
 le package `sf` et la fonction `st_read()`. 
 * Vérifiez le système de projection avec `st_crs()`. S'agit-il de données 
 projetée ? Si ce n'est pas le cas, transformez la couche des communes dans la 
-projection française (Lambert 93) avec la fonction `st_transform()`. 
+projection française (Lambert 93, EPSG : 2154) avec la fonction 
+`st_transform()`. 
 
 ```{r}
 library(sf)
@@ -122,11 +127,11 @@ plot(st_geometry(toulouse_buffer), col = NA, lwd = 3, border = "red",
 Déterminez quelles communes de la Haute-Garonne intersectent le buffer créé.
 
 * Utilisez la fonction `st_intersects()`. 
-* Inserez directement le resultat comme variable de l'objet **dep31**.
+* Inserez directement le resultat dans une variable nommée **in_buffer** dans 
+l'objet **dep31**.
 
 ```{r}
-inter <- st_intersects(x = com31, toulouse_buffer)
-com31$in_buffer <- sapply(X = inter, FUN = length)
+com31$in_buffer <- st_intersects(x = com31, toulouse_buffer, sparse = FALSE)
 head(com31, 2)
 ```
 
@@ -161,10 +166,11 @@ plot(st_geometry(dep76), col = NA, border = "grey50", add = TRUE)
 ## Créer une couche de points 
 
 Créer un objet `sf` (points) contenant la localisation de la préfécture de 
-région.
-Vous pouvez récupérer la longitude et la latitude sur Google Map ou OSM
-Créer un point avec `st_points()`, puis un objet `sfc` avec avec `st_sfc()` et
-finalement un objet `sf` avec `st_sf()`
+région à Toulouse.  
+
+* Vous pouvez récupérer la longitude et la latitude sur Google Map ou OSM.  
+* Créer un point avec `st_points()`, puis un objet `sfc` avec avec `st_sfc()` et
+finalement un objet `sf` avec `st_sf()`.  
 
 
 ```{r}
@@ -181,9 +187,9 @@ pref
 ## Calculer des distances
 
 Calculez une matrice de distance entre la préfecture et les centroïdes des
-communes du département Haute-Garonne. Ajouter cette distance dans une nouvelle 
-colonne **dist_pref** dans **com31**. Pour cela, utiliser les fonction 
-`st_centroid()` et `st_distance()`.
+communes du département Haute-Garonne.  
+Ajouter cette distance dans une nouvelle colonne **dist_pref** dans **com31**. 
+Pour cela, utiliser les fonction `st_centroid()` et `st_distance()`.  
 N'oubliez pas de vérifier les projections utilisées avec `st_crs()`, au besoin
 modifiez les avec `st_transform()`.
 
@@ -204,7 +210,7 @@ head(com31, 2)
 ## Cartographier une variable
 
 Cartographiez distance de chaque commune du département à la préfecture avec la 
-fonction `plot()`
+fonction `plot()`.
 
 
 ```{r}
@@ -226,23 +232,37 @@ knitr::knit_hooks$set(nm = function(before, options, envir){
     par(mar=c(0,0,0,0))
   } 
 })
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, cache = TRUE, nm=TRUE)
 ```
 
 *** 
 
 # Cartographie thématique
 
+## Préparer son environement de travail
+Dans le même projet RStudio créez un deuxième script nommé **exo2.R**.  
+Votre projet RStudio doit maintenant être structuré de la manière suivante :
+
+``` bash
+├── data
+│   └── base_cc_comparateur.xls
+│   └── Occitanie.gpkg
+├── exo1.R
+├── exo2.R
+└── exercice.Rproj
+```
+
+
 ## Charger des données statistiques
 
 * Charger la couche géographique des communes d'Occitanie
 (**data/Occitanie.gpkg**). Utilisez le package `sf` et la fonction `st_read()` 
 pour importer les données.
-* Vérifiez le système de projection avec `st_crs()` 
+* Vérifiez le système de projection avec `st_crs()`. 
 * Charger les fichier de données **data/base_cc_comparateur.xls** fournie par 
 l'INSEE. Utilisez le package `readxl` et la fonction `read_excel()` pour 
 ouvrir la table de données correctement. Importer la table dans un objet 
-nommé **occ_df**
+nommé **occ_df**.
 
 
 ```{r}
@@ -331,17 +351,17 @@ stock.).
 d'un département (échelle départementale, découpage communale, carte de ratio).
 
 
-Nous vous conseillons d'utiliser le package 'cartography' pour l'ensemble de 
+Nous vous conseillons d'utiliser le package `cartography` pour l'ensemble de 
 vos réalisations. 
-Néanmoins l'utilisation d'autres packages comme ggplot2 ou tmap est possible.
+Néanmoins l'utilisation d'autres packages comme `ggplot2` ou `tmap` est possible.
 
 ## Évaluation
 
 Vous devrez nous rendre pour le **vendredi 7 février 2020** un script permettant 
-de construire ces huit cartes (#carto) dans un fichier dont le nom est constitué de votre 
+de construire ces huit cartes dans un fichier dont le nom est constitué de votre 
 prénom et de votre nom (**Prenom_Nom.R**).  
-Votre script doit pouvoir fonctionner dans un projet RStudio structuré de la 
-manière suivante : 
+Votre script doit pouvoir fonctionner une fois inséré dans un projet RStudio
+structuré de la manière suivante : 
 
 ``` bash
 ├── data
@@ -350,7 +370,6 @@ manière suivante :
 ├── Prenom_Nom.R
 └── rendu.Rproj
 ```
-
 
 Vous serez évalués de la manière suivante : 
 
