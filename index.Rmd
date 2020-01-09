@@ -21,7 +21,7 @@ knitr::knit_hooks$set(nm = function(before, options, envir){
     par(mar=c(0,0,0,0))
   } 
 })
-knitr::opts_chunk$set(echo = TRUE, eval = TRUE, cache = TRUE, nm=TRUE)
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
 ```
 
 # Traitement de données spatiales
@@ -232,7 +232,7 @@ knitr::knit_hooks$set(nm = function(before, options, envir){
     par(mar=c(0,0,0,0))
   } 
 })
-knitr::opts_chunk$set(echo = TRUE, eval = TRUE, cache = TRUE, nm=TRUE)
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
 ```
 
 *** 
