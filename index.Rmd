@@ -128,7 +128,7 @@ Déterminez quelles communes de la Haute-Garonne intersectent le buffer créé.
 
 * Utilisez la fonction `st_intersects()`. 
 * Inserez directement le resultat dans une variable nommée **in_buffer** dans 
-l'objet **dep31**.
+l'objet **com31**.
 
 ```{r}
 com31$in_buffer <- st_intersects(x = com31, toulouse_buffer, sparse = FALSE)
