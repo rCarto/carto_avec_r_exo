@@ -35,10 +35,10 @@ Cela améliore l'organisation et la portabilité de votre travail.
 * Dans le projet, créez un dossier **data**.
 * Téléchargez les données :  
     * Un fichier contenant les polygones des communes d'Occitanie au format 
-    **gpkg** est disponible ici : **Occitanie.gpkg - insert link**. Il faut télécharger le 
+    **gpkg** est disponible ici : **[Occitanie.gpkg](https://github.com/rCarto/carto_avec_r_exo/raw/master/data/Occitanie.gpkg)**. Il faut télécharger le 
     fichier puis le placer dans le dossier **data** que vous venez de créer. 
     * Un fichier contenant des données socio-démographiques sur les communes de
-    France est disponible ici : **base_cc_comparateur.xls - insert link**. Il faut le télécharger et le mettre également dans le même dossier **data**.  
+    France est disponible ici : **[base_cc_comparateur.xls](https://github.com/rCarto/carto_avec_r_exo/raw/master/data/base_cc_comparateur.xls)**. Il faut le télécharger et le mettre également dans le même dossier **data**.  
 * Créez un fichier **exo1.R** et enregistrez le à la racine du projet. 
 
 Votre projet RStudio doit être structuré de la manière suivante :
