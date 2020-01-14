@@ -12,6 +12,8 @@ output:
     highlight: pygments
     number_sections: yes
     theme: sandstone
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -223,6 +225,70 @@ plot(com31["dist_pref"], main = "Distance à la préfecture (en mètres)",
      reset = FALSE)
 plot(st_geometry(pref), pch = 20, col = "red", add = TRUE )
 ```
+
+
+
+
+## Extraire des données OpenStreetMap
+
+* Sélectionnez les communes d'un autre département dans un nouvel objet nommé 
+**com+codeDuDépartement*** (*com46* par exemple). 
+* Avec le package `osmdata` extrayez l'ensemble des restaurants présents dans le département. 
+* Affichez les communes qui ne contiennent pas de restaurants. 
+* Pour ces communes calculez la distance au restaurant le plus proche. 
+
+```{r}
+com46 <- occ[occ$INSEE_DEP == "46", ]
+plot(st_geometry(com46))
+```
+
+```{r}
+library(osmdata)
+# Définition d'une bounding box
+q <- opq(bbox=st_bbox(st_transform(com46,4326)))
+# Extraction des restaurants
+res <- add_osm_feature(opq = q, key = 'amenity', value = "restaurant")
+res.sf <- osmdata_sf(res)
+res.sf.pts  <- res.sf$osm_points[!is.na(res.sf$osm_points$amenity),]
+resto <- st_transform(res.sf.pts, st_crs(com46))
+resto <- st_intersection(resto, st_geometry(com46))
+```
+
+```{r, nm=FALSE}
+# Affichage des restaurants
+plot(st_geometry(com46), col="darkseagreen3", border="darkseagreen4")
+plot(st_geometry(resto), add=TRUE, pch=20, col = "#330A5FFF", cex = 0.5)
+
+# Compter les restaurants par communes
+inter <- st_intersects(x = com46, y = resto)
+com46$nresto <- sapply(inter, length)
+
+# communes sans restos
+com46noresto <- com46[com46$nresto==0, ]
+plot(st_geometry(com46), col="darkseagreen3", border="darkseagreen4")
+plot(st_geometry(com46noresto), col = 'red', add = TRUE)
+plot(st_geometry(resto), add=TRUE, pch=20, col = "blue", cex = 1)
+
+
+# index du restaurant le plus proche
+index <- st_nearest_feature(x = st_centroid(com46noresto), 
+                            y = resto)
+# distance au plus proche
+com46noresto$dresto <- st_distance(x = st_centroid(com46noresto), 
+                                   y = resto[index, ], 
+                                   by_element = TRUE)
+
+# Affichage de la carte
+plot(com46noresto['dresto'], reset = F, 
+     main = "Distance au restaurant le plus proche")
+plot(st_geometry(com46), col=NA, add= TRUE)
+plot(st_geometry(resto), add=TRUE, pch=20, col = "red", cex = 1)
+
+```
+
+
+
+
 
 
 ```{r setup2, include=FALSE}
