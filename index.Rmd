@@ -298,7 +298,7 @@ knitr::knit_hooks$set(nm = function(before, options, envir){
     par(mar=c(0,0,0,0))
   } 
 })
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, cache = TRUE, nm=TRUE)
 ```
 
 *** 
@@ -399,7 +399,7 @@ Vous devez réaliser les huit types de cartes suivants :
 des labels, legende...);
 2. Une carte représentant une variable quantitative absolue (un stock);
 3. Une carte représentant une variable quantitative relative (un ratio);
-4. Une carte combiant une variable quantitative absolue et une variable 
+4. Une carte combinant une variable quantitative absolue et une variable 
 quantitative relative (un stock et un ratio);
 5. Une carte représentant une variable qualitive;
 6. Une carte utilisant une anamorphose. Il est possible de combiner les 
