@@ -347,8 +347,8 @@ head(occ_df, 2)
 
 Créez un nouvel objet `sf` à partir d'une séléction par attribut`:
 
-* Séléctionnez toutes les communes d'un seul département (ne choisissez pas la 
-Haute-Garonne).
+* Séléctionnez toutes les communes d'un seul département 
+(**ne choisissez pas la Haute-Garonne (31)**).
 * Enregistrez votre séléction dans un nouvel objet nommé 
 **com+codeDuDépartement*** (*com46* par exemple)
 * Afficher la nouvelle couche (`plot(st_geometry(...)`).
@@ -358,8 +358,8 @@ Haute-Garonne).
  
 ```{r}
 unique(occ$INSEE_DEP)
-com46 <- occ[occ$INSEE_DEP=="46", ]
-plot(st_geometry(com46))
+com31 <- occ[occ$INSEE_DEP=="31", ]
+plot(st_geometry(com31))
 
 ```
  
@@ -372,10 +372,10 @@ plot(st_geometry(com46))
  l'identifiant commun entre la table géo et la table attributaire?
  
 ```{r}
-head(com46, 2)
+head(com31, 2)
 head(occ_df, 2)
-com46 <- merge(com46, occ_df, by.x = "INSEE_COM", by.y = "CODGEO", all.x = TRUE)
-head(com46, 2)
+com31 <- merge(com31, occ_df, by.x = "INSEE_COM", by.y = "CODGEO", all.x = TRUE)
+head(com31, 2)
 ```
 
 
@@ -421,6 +421,8 @@ Nous vous conseillons d'utiliser le package `cartography` pour l'ensemble de
 vos réalisations. 
 Néanmoins l'utilisation d'autres packages comme `ggplot2` ou `tmap` est possible.
 
+
+
 ## Évaluation
 
 Vous devrez nous rendre pour le **vendredi 7 février 2020** un script permettant 
@@ -442,6 +444,54 @@ Vous serez évalués de la manière suivante :
 * 2 points par cartes (choix sémiologiques, traitement des données en amont...),
 * 4 points pour la qualité et la présentation du code (reproductibilité, 
 commentaires, clareté).
+
+
+
+## Aides
+
+
+### Créer de nouvelles variables
+
+Pour répondre à cet exercice vous devrez créer au moins deux nouvelles variables. 
+Une variable qualitative et une variable quantitative relative. 
+
+
+
+### Créer un carton avec la position de votre département
+
+
+```{r}
+# créer une couche des départements
+dep76 <- aggregate(occ["POPULATION"], by = list(INSEE_DEP = occ$INSEE_DEP), sum)
+
+library(cartography)
+library(mapinsetr)
+# créez un masque à la dimension de la région
+mask <- create_mask(bb = st_bbox(st_buffer(dep76, 10000)))
+# déplacer et redimensioner la région
+minidep76 <- move_and_resize(x = dep76, mask = mask,
+                             xy = c(564922.8, 6184225), k = 0.1 )
+# déplacer et redimensioner le masque
+minimask <- move_and_resize(x = mask, mask = mask,
+                             xy = c(564922.8, 6184225), k = 0.1 )
+
+par(mar = c(0, 0, 1.2, 0))
+plot(st_geometry(com31), bg = "cornsilk", col = "lightblue4", 
+     border = "lightblue2")
+plot(st_geometry(minimask), col = "cornsilk2", border = NA,  add = T)
+plot(st_geometry(minidep76), col = "grey70", border = NA,  add=T)
+plot(st_geometry(minidep76[minidep76$INSEE_DEP =="31", ]), 
+     col = "lightblue4", border = NA,  add=T)
+layoutLayer("Le département Haute-Garonne", 
+            author = "ADMIN EXPRESS COG édition 2019, IGN",
+            sources = "T. Giraud, 2020", scale = 10, 
+            horiz = F, posscale = "bottomleft", south = TRUE)
+            
+```
+
+
+
+
 
 [^1]: UMS RIATE, CNRS
 [^2]: FR CIST, CNRS
