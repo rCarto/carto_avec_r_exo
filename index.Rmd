@@ -453,7 +453,28 @@ commentaires, clareté).
 ### Créer de nouvelles variables
 
 Pour répondre à cet exercice vous devrez créer au moins deux nouvelles variables. 
-Une variable qualitative et une variable quantitative relative. 
+Une variable quantitative relative : 
+```{r}
+# création d'un taux de chomage
+com31$tx_chom <- 100 * com31$P16_CHOM1564 / com31$P16_ACT1564
+```
+
+
+Une variable qualitative 
+(**n'utilisez par cette variables dans votre exercice **) :  
+```{r}
+# calcul de la part des résidences secondaires 
+# dans les logements
+com31$logsec <- 100 * com31$P16_RSECOCC / com31$P16_LOG
+summary(com31$logsec)
+com31$logsectypo <- cut(com31$logsec, breaks = c(0, 1.8, 16, 89), 
+                         labels = c("faible", "moyenne", "forte"),
+                        include.lowest = TRUE)
+typoLayer(com31, var = "logsectypo", col= c("red", "yellow", "green"),
+          legend.pos = "topleft", 
+          legend.title.txt = "Part des résidences secondaire")
+```
+
 
 
 
