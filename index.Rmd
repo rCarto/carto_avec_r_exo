@@ -404,7 +404,8 @@ quantitative relative (un stock et un ratio);
 5. Une carte représentant une variable qualitive;
 6. Une carte utilisant une anamorphose. Il est possible de combiner les 
 anamorphoses avec d'autres variables (qualitative ou quantitative relative);
-7. Une carte interactive;
+7. Une carte interactive des communes du département + un point sur la 
+préfecture du département;
 8. Une carte utilisant une grille régulière ou représentant des discontinuités. 
 
 
@@ -425,7 +426,7 @@ Néanmoins l'utilisation d'autres packages comme `ggplot2` ou `tmap` est possibl
 
 ## Évaluation
 
-Vous devrez nous rendre pour le **vendredi 7 février 2020** un script permettant 
+Vous devrez nous rendre pour le **vendredi 28 février 2020** un script permettant 
 de construire ces huit cartes dans un fichier dont le nom est constitué de votre 
 prénom et de votre nom (**Prenom_Nom.R**).  
 Votre script doit pouvoir fonctionner une fois inséré dans un projet RStudio
