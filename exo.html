@@ -1617,10 +1617,6 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 <li>Chargez la couche géographique des communes d’Occitanie en utilisant le package <code>sf</code> et la fonction <code>st_read()</code>.</li>
 <li>Vérifiez le système de projection avec <code>st_crs()</code>. S’agit-il de données projetée ? Si ce n’est pas le cas, transformez la couche des communes dans la projection française (Lambert 93, EPSG : 2154) avec la fonction <code>st_transform()</code>.</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">occ_raw &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="dt">dsn =</span> <span class="st">&quot;data/Occitanie.gpkg&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">st_crs</span>(occ_raw)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">occ &lt;-<span class="st"> </span><span class="kw">st_transform</span>(<span class="dt">x =</span> occ_raw, <span class="dt">crs =</span> <span class="dv">2154</span>)</a></code></pre></div>
 </div>
 <div id="réaliser-une-sélection-par-attributs" class="section level2">
 <h2><span class="header-section-number">1.3</span> Réaliser une sélection par attributs</h2>
@@ -1630,9 +1626,6 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 <li>Afficher la nouvelle couche (en utilisant notament <code>st_geometry()</code>)</li>
 </ul>
 <p>Pour connaitre la liste de tous les noms ou code de région on peut utiliser la fonction <code>unique()</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">unique</span>(occ<span class="op">$</span>INSEE_DEP)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">com31 &lt;-<span class="st"> </span>occ[occ<span class="op">$</span>INSEE_DEP <span class="op">==</span><span class="st"> &quot;31&quot;</span>, ]</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com31))</a></code></pre></div>
 </div>
 <div id="fusionner-des-entités" class="section level2">
 <h2><span class="header-section-number">1.4</span> Fusionner des entités</h2>
@@ -1641,23 +1634,12 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 <li>Créez la couche géograpique des départements de la région (<strong>dep76</strong>), utilisez la fonction <code>aggregate()</code> pour regrouper les polygones et calculer les sommes des populations communales.</li>
 <li>Affichez les résultats (communes, départements et région)</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">reg76 &lt;-<span class="st"> </span><span class="kw">st_union</span>(occ)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">dep76 &lt;-<span class="st"> </span><span class="kw">aggregate</span>(occ[<span class="st">&quot;POPULATION&quot;</span>], <span class="dt">by =</span> <span class="kw">list</span>(occ<span class="op">$</span>INSEE_DEP), sum)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(occ), <span class="dt">col =</span> <span class="st">&quot;lightblue1&quot;</span>, <span class="dt">border =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">lwd =</span> <span class="fl">.5</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(dep76), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">&quot;lightblue2&quot;</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">plot</span>(reg76, <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">&quot;lightblue3&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="créer-une-zone-tampon" class="section level2">
 <h2><span class="header-section-number">1.5</span> Créer une zone tampon</h2>
 <ul>
 <li>Créez une zone tampon d’une distance de 10 km autour des limites de la commune de Toulouse avec <code>st_buffer()</code>. Quel est le code INSEE de la commune de Toulouse?</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">toulouse &lt;-<span class="st"> </span>com31[com31<span class="op">$</span>INSEE_COM <span class="op">==</span><span class="st"> &quot;31555&quot;</span>,]</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">toulouse_buffer &lt;-<span class="st"> </span><span class="kw">st_buffer</span>(toulouse, <span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com31), <span class="dt">lwd =</span> <span class="fl">.5</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(toulouse), <span class="dt">col =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(toulouse_buffer), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">lwd =</span> <span class="dv">3</span>, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, </a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">     <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="réaliser-un-sélection-par-localisation" class="section level2">
 <h2><span class="header-section-number">1.6</span> Réaliser un sélection par localisation</h2>
@@ -1666,8 +1648,6 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 <li>Utilisez la fonction <code>st_intersects()</code>.</li>
 <li>Inserez directement le resultat dans une variable nommée <strong>in_buffer</strong> dans l’objet <strong>com31</strong>.</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">com31<span class="op">$</span>in_buffer &lt;-<span class="st"> </span><span class="kw">st_intersects</span>(<span class="dt">x =</span> com31, toulouse_buffer, <span class="dt">sparse =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">head</span>(com31, <span class="dv">2</span>)</a></code></pre></div>
 </div>
 <div id="afficher-des-couches-géographiques" class="section level2">
 <h2><span class="header-section-number">1.7</span> Afficher des couches géographiques</h2>
@@ -1681,16 +1661,6 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 <li>Les limites de l’Occitanie</li>
 </ul>
 <p>Jouez sur les styles pour les différencier…</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">plot</span>(reg76, <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">&quot;grey50&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">bg =</span> <span class="st">&quot;lightyellow&quot;</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com31), <span class="dt">col =</span> <span class="st">&quot;#aec8f2&quot;</span>, <span class="dt">border =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">lwd =</span> <span class="fl">.5</span>, </a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">     <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com31[com31<span class="op">$</span>in_buffer <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>, ]),<span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="fl">.5</span>, </a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">     <span class="dt">border =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(toulouse), <span class="dt">col =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="dt">border =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">lwd =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">     <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(toulouse_buffer), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, </a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">     <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(dep76), <span class="dt">col =</span> <span class="ot">NA</span>, <span class="dt">border =</span> <span class="st">&quot;grey50&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="créer-une-couche-de-points" class="section level2">
 <h2><span class="header-section-number">1.8</span> Créer une couche de points</h2>
@@ -1700,40 +1670,16 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 </li>
 <li>Créer un point avec <code>st_points()</code>, puis un objet <code>sfc</code> avec avec <code>st_sfc()</code> et finalement un objet <code>sf</code> avec <code>st_sf()</code>.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Sur OSM : https://www.openstreetmap.org/search?whereami=1&amp;query=43.59825%2C1.45047#map=19/43.59825/1.45047</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># Position de la préfecture 43.59825, 1.45047</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">pref_pt &lt;-<span class="st"> </span><span class="kw">st_point</span>(<span class="kw">c</span>(<span class="fl">1.45047</span>, <span class="fl">43.59825</span>))</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">pref_sfc &lt;-<span class="st"> </span><span class="kw">st_sfc</span>(pref_pt, <span class="dt">crs =</span> (<span class="dv">4326</span>))</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">pref &lt;-<span class="st"> </span><span class="kw">st_sf</span>(<span class="dt">name =</span> <span class="st">&quot;Préfecture&quot;</span>, <span class="dt">geometry =</span> pref_sfc)</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">pref</a></code></pre></div>
 </div>
 <div id="calculer-des-distances" class="section level2">
 <h2><span class="header-section-number">1.9</span> Calculer des distances</h2>
 <p>Calculez une matrice de distance entre la préfecture et les centroïdes des communes du département Haute-Garonne.<br />
 Ajouter cette distance dans une nouvelle colonne <strong>dist_pref</strong> dans <strong>com31</strong>. Pour cela, utiliser les fonction <code>st_centroid()</code> et <code>st_distance()</code>.<br />
 N’oubliez pas de vérifier les projections utilisées avec <code>st_crs()</code>, au besoin modifiez les avec <code>st_transform()</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">st_crs</span>(pref)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">st_crs</span>(com31)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">identical</span>(<span class="kw">st_crs</span>(pref), <span class="kw">st_crs</span>(com31))</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">pref &lt;-<span class="st"> </span><span class="kw">st_transform</span>(pref, <span class="kw">st_crs</span>(com31))</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">identical</span>(<span class="kw">st_crs</span>(pref), <span class="kw">st_crs</span>(com31))</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co"># Centroides des communes</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">com31_centro &lt;-<span class="st"> </span><span class="kw">st_centroid</span>(<span class="kw">st_geometry</span>(com31))</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">com31<span class="op">$</span>dist_pref &lt;-<span class="st"> </span><span class="kw">st_distance</span>(com31_centro, pref)</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw">head</span>(com31, <span class="dv">2</span>)</a></code></pre></div>
 </div>
 <div id="cartographier-une-variable" class="section level2">
 <h2><span class="header-section-number">1.10</span> Cartographier une variable</h2>
 <p>Cartographiez distance de chaque commune du département à la préfecture avec la fonction <code>plot()</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Le plus simple</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">plot</span>(com31[<span class="st">&quot;dist_pref&quot;</span>])</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co"># Avec un peu de paramétrage</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw">plot</span>(com31[<span class="st">&quot;dist_pref&quot;</span>], <span class="dt">main =</span> <span class="st">&quot;Distance à la préfecture (en mètres)&quot;</span>, </a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">     <span class="dt">pal =</span> <span class="kw">hcl.colors</span>(<span class="dv">13</span>,<span class="st">&quot;Turku&quot;</span>, <span class="dt">rev =</span> <span class="ot">TRUE</span>), <span class="dt">border =</span> <span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">     <span class="dt">key.pos =</span> <span class="dv">1</span>,<span class="dt">key.width =</span> <span class="fl">.15</span>, <span class="dt">key.length =</span> <span class="fl">.75</span>, <span class="dt">graticule =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">     <span class="dt">reset =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(pref), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span> )</a></code></pre></div>
 </div>
 <div id="extraire-des-données-openstreetmap" class="section level2">
 <h2><span class="header-section-number">1.11</span> Extraire des données OpenStreetMap</h2>
@@ -1743,45 +1689,6 @@ N’oubliez pas de vérifier les projections utilisées avec <code>st_crs()</cod
 <li>Affichez les communes qui ne contiennent pas de restaurants.</li>
 <li>Pour ces communes calculez la distance au restaurant le plus proche.</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">com46 &lt;-<span class="st"> </span>occ[occ<span class="op">$</span>INSEE_DEP <span class="op">==</span><span class="st"> &quot;46&quot;</span>, ]</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com46))</a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">library</span>(osmdata)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># Définition d'une bounding box</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">q &lt;-<span class="st"> </span><span class="kw">opq</span>(<span class="dt">bbox=</span><span class="kw">st_bbox</span>(<span class="kw">st_transform</span>(com46,<span class="dv">4326</span>)))</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># Extraction des restaurants</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">add_osm_feature</span>(<span class="dt">opq =</span> q, <span class="dt">key =</span> <span class="st">'amenity'</span>, <span class="dt">value =</span> <span class="st">&quot;restaurant&quot;</span>)</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">res.sf &lt;-<span class="st"> </span><span class="kw">osmdata_sf</span>(res)</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">res.sf.pts  &lt;-<span class="st"> </span>res.sf<span class="op">$</span>osm_points[<span class="op">!</span><span class="kw">is.na</span>(res.sf<span class="op">$</span>osm_points<span class="op">$</span>amenity),]</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">resto &lt;-<span class="st"> </span><span class="kw">st_transform</span>(res.sf.pts, <span class="kw">st_crs</span>(com46))</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">resto &lt;-<span class="st"> </span><span class="kw">st_intersection</span>(resto, <span class="kw">st_geometry</span>(com46))</a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Affichage des restaurants</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com46), <span class="dt">col=</span><span class="st">&quot;darkseagreen3&quot;</span>, <span class="dt">border=</span><span class="st">&quot;darkseagreen4&quot;</span>)</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(resto), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">col =</span> <span class="st">&quot;#330A5FFF&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co"># Compter les restaurants par communes</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">inter &lt;-<span class="st"> </span><span class="kw">st_intersects</span>(<span class="dt">x =</span> com46, <span class="dt">y =</span> resto)</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">com46<span class="op">$</span>nresto &lt;-<span class="st"> </span><span class="kw">sapply</span>(inter, length)</a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co"># communes sans restos</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10">com46noresto &lt;-<span class="st"> </span>com46[com46<span class="op">$</span>nresto<span class="op">==</span><span class="dv">0</span>, ]</a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com46), <span class="dt">col=</span><span class="st">&quot;darkseagreen3&quot;</span>, <span class="dt">border=</span><span class="st">&quot;darkseagreen4&quot;</span>)</a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com46noresto), <span class="dt">col =</span> <span class="st">'red'</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(resto), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co"># index du restaurant le plus proche</span></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17">index &lt;-<span class="st"> </span><span class="kw">st_nearest_feature</span>(<span class="dt">x =</span> <span class="kw">st_centroid</span>(com46noresto), </a>
-<a class="sourceLine" id="cb13-18" data-line-number="18">                            <span class="dt">y =</span> resto)</a>
-<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co"># distance au plus proche</span></a>
-<a class="sourceLine" id="cb13-20" data-line-number="20">com46noresto<span class="op">$</span>dresto &lt;-<span class="st"> </span><span class="kw">st_distance</span>(<span class="dt">x =</span> <span class="kw">st_centroid</span>(com46noresto), </a>
-<a class="sourceLine" id="cb13-21" data-line-number="21">                                   <span class="dt">y =</span> resto[index, ], </a>
-<a class="sourceLine" id="cb13-22" data-line-number="22">                                   <span class="dt">by_element =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb13-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="co"># Affichage de la carte</span></a>
-<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="kw">plot</span>(com46noresto[<span class="st">'dresto'</span>], <span class="dt">reset =</span> F, </a>
-<a class="sourceLine" id="cb13-26" data-line-number="26">     <span class="dt">main =</span> <span class="st">&quot;Distance au restaurant le plus proche&quot;</span>)</a>
-<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com46), <span class="dt">col=</span><span class="ot">NA</span>, <span class="dt">add=</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb13-28" data-line-number="28"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(resto), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">cex =</span> <span class="dv">1</span>)</a></code></pre></div>
 <hr />
 </div>
 </div>
@@ -1791,12 +1698,12 @@ N’oubliez pas de vérifier les projections utilisées avec <code>st_crs()</cod
 <h2><span class="header-section-number">2.1</span> Préparer son environement de travail</h2>
 <p>Dans le même projet RStudio créez un deuxième script nommé <strong>exo2.R</strong>.<br />
 Votre projet RStudio doit maintenant être structuré de la manière suivante :</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">├── <span class="ex">data</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">│   └── <span class="ex">base_cc_comparateur.xls</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">│   └── <span class="ex">Occitanie.gpkg</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">├── <span class="ex">exo1.R</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">├── <span class="ex">exo2.R</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">└── <span class="ex">exercice.Rproj</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">├── <span class="ex">data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">│   └── <span class="ex">base_cc_comparateur.xls</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">│   └── <span class="ex">Occitanie.gpkg</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">├── <span class="ex">exo1.R</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">├── <span class="ex">exo2.R</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">└── <span class="ex">exercice.Rproj</span></a></code></pre></div>
 </div>
 <div id="charger-des-données-statistiques" class="section level2">
 <h2><span class="header-section-number">2.2</span> Charger des données statistiques</h2>
@@ -1805,14 +1712,6 @@ Votre projet RStudio doit maintenant être structuré de la manière suivante :<
 <li>Vérifiez le système de projection avec <code>st_crs()</code>.</li>
 <li>Charger les fichier de données <strong>data/base_cc_comparateur.xls</strong> fournie par l’INSEE. Utilisez le package <code>readxl</code> et la fonction <code>read_excel()</code> pour ouvrir la table de données correctement. Importer la table dans un objet nommé <strong>occ_df</strong>.</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">occ_raw &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="dt">dsn =</span> <span class="st">&quot;data/Occitanie.gpkg&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">st_crs</span>(occ_raw)</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">occ &lt;-<span class="st"> </span><span class="kw">st_transform</span>(<span class="dt">x =</span> occ_raw, <span class="dt">crs =</span> <span class="dv">2154</span>)</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="kw">library</span>(readxl)</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">occ_df &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="dt">path =</span> <span class="st">&quot;data/base_cc_comparateur.xls&quot;</span>, <span class="dt">sheet =</span> <span class="dv">1</span>, <span class="dt">skip =</span> <span class="dv">5</span>) </a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="kw">head</span>(occ_df, <span class="dv">2</span>)</a></code></pre></div>
 </div>
 <div id="réaliser-une-sélection-par-attributs-1" class="section level2">
 <h2><span class="header-section-number">2.3</span> Réaliser une sélection par attributs</h2>
@@ -1823,19 +1722,12 @@ Votre projet RStudio doit maintenant être structuré de la manière suivante :<
 <li>Afficher la nouvelle couche (<code>plot(st_geometry(...)</code>).</li>
 </ul>
 <p>Pour connaitre la liste de tous les noms ou code de région voir la fonction <code>unique()</code></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">unique</span>(occ<span class="op">$</span>INSEE_DEP)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">com31 &lt;-<span class="st"> </span>occ[occ<span class="op">$</span>INSEE_DEP<span class="op">==</span><span class="st">&quot;31&quot;</span>, ]</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com31))</a></code></pre></div>
 </div>
 <div id="réaliser-une-jointure" class="section level2">
 <h2><span class="header-section-number">2.4</span> Réaliser une jointure</h2>
 <ul>
 <li>Joignez la table de données INSEE avec la couche gégographique des communes de votre département séléctionné. Utilisez la fonction <code>merge()</code>. Quel est l’identifiant commun entre la table géo et la table attributaire?</li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">head</span>(com31, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">head</span>(occ_df, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">com31 &lt;-<span class="st"> </span><span class="kw">merge</span>(com31, occ_df, <span class="dt">by.x =</span> <span class="st">&quot;INSEE_COM&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;CODGEO&quot;</span>, <span class="dt">all.x =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw">head</span>(com31, <span class="dv">2</span>)</a></code></pre></div>
 </div>
 <div id="réaliser-des-cartes-thématiques" class="section level2">
 <h2><span class="header-section-number">2.5</span> Réaliser des cartes thématiques</h2>
@@ -1864,11 +1756,11 @@ Votre projet RStudio doit maintenant être structuré de la manière suivante :<
 <h2><span class="header-section-number">2.6</span> Évaluation</h2>
 <p>Vous devrez nous rendre pour le <strong>vendredi 28 février 2020</strong> un script permettant de construire ces huit cartes dans un fichier dont le nom est constitué de votre prénom et de votre nom (<strong>Prenom_Nom.R</strong>).<br />
 Votre script doit pouvoir fonctionner une fois inséré dans un projet RStudio structuré de la manière suivante :</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1">├── <span class="ex">data</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">│   ├── <span class="ex">base_cc_comparateur.xls</span></a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">│   └── <span class="ex">Occitanie.gpkg</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4">├── <span class="ex">Prenom_Nom.R</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5">└── <span class="ex">rendu.Rproj</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">├── <span class="ex">data</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">│   ├── <span class="ex">base_cc_comparateur.xls</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">│   └── <span class="ex">Occitanie.gpkg</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">├── <span class="ex">Prenom_Nom.R</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">└── <span class="ex">rendu.Rproj</span></a></code></pre></div>
 <p>Vous serez évalués de la manière suivante :</p>
 <ul>
 <li>2 points par cartes (choix sémiologiques, traitement des données en amont…),</li>
@@ -1880,47 +1772,10 @@ Votre script doit pouvoir fonctionner une fois inséré dans un projet RStudio s
 <div id="créer-de-nouvelles-variables" class="section level3">
 <h3><span class="header-section-number">2.7.1</span> Créer de nouvelles variables</h3>
 <p>Pour répondre à cet exercice vous devrez créer au moins deux nouvelles variables. Une variable quantitative relative :</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># création d'un taux de chomage</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">com31<span class="op">$</span>tx_chom &lt;-<span class="st"> </span><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>com31<span class="op">$</span>P16_CHOM1564 <span class="op">/</span><span class="st"> </span>com31<span class="op">$</span>P16_ACT1564</a></code></pre></div>
 <p>Une variable qualitative (<strong>n’utilisez par cette variables dans votre exercice </strong>) :</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># calcul de la part des résidences secondaires </span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co"># dans les logements</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">com31<span class="op">$</span>logsec &lt;-<span class="st"> </span><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>com31<span class="op">$</span>P16_RSECOCC <span class="op">/</span><span class="st"> </span>com31<span class="op">$</span>P16_LOG</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="kw">summary</span>(com31<span class="op">$</span>logsec)</a>
-<a class="sourceLine" id="cb20-5" data-line-number="5">com31<span class="op">$</span>logsectypo &lt;-<span class="st"> </span><span class="kw">cut</span>(com31<span class="op">$</span>logsec, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">1.8</span>, <span class="dv">16</span>, <span class="dv">89</span>), </a>
-<a class="sourceLine" id="cb20-6" data-line-number="6">                         <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;faible&quot;</span>, <span class="st">&quot;moyenne&quot;</span>, <span class="st">&quot;forte&quot;</span>),</a>
-<a class="sourceLine" id="cb20-7" data-line-number="7">                        <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb20-8" data-line-number="8"><span class="kw">typoLayer</span>(com31, <span class="dt">var =</span> <span class="st">&quot;logsectypo&quot;</span>, <span class="dt">col=</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>),</a>
-<a class="sourceLine" id="cb20-9" data-line-number="9">          <span class="dt">legend.pos =</span> <span class="st">&quot;topleft&quot;</span>, </a>
-<a class="sourceLine" id="cb20-10" data-line-number="10">          <span class="dt">legend.title.txt =</span> <span class="st">&quot;Part des résidences secondaire&quot;</span>)</a></code></pre></div>
 </div>
 <div id="créer-un-carton-avec-la-position-de-votre-département" class="section level3">
 <h3><span class="header-section-number">2.7.2</span> Créer un carton avec la position de votre département</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># créer une couche des départements</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">dep76 &lt;-<span class="st"> </span><span class="kw">aggregate</span>(occ[<span class="st">&quot;POPULATION&quot;</span>], <span class="dt">by =</span> <span class="kw">list</span>(<span class="dt">INSEE_DEP =</span> occ<span class="op">$</span>INSEE_DEP), sum)</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw">library</span>(cartography)</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="kw">library</span>(mapinsetr)</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># créez un masque à la dimension de la région</span></a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">mask &lt;-<span class="st"> </span><span class="kw">create_mask</span>(<span class="dt">bb =</span> <span class="kw">st_bbox</span>(<span class="kw">st_buffer</span>(dep76, <span class="dv">10000</span>)))</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co"># déplacer et redimensioner la région</span></a>
-<a class="sourceLine" id="cb21-9" data-line-number="9">minidep76 &lt;-<span class="st"> </span><span class="kw">move_and_resize</span>(<span class="dt">x =</span> dep76, <span class="dt">mask =</span> mask,</a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">                             <span class="dt">xy =</span> <span class="kw">c</span>(<span class="fl">564922.8</span>, <span class="dv">6184225</span>), <span class="dt">k =</span> <span class="fl">0.1</span> )</a>
-<a class="sourceLine" id="cb21-11" data-line-number="11"><span class="co"># déplacer et redimensioner le masque</span></a>
-<a class="sourceLine" id="cb21-12" data-line-number="12">minimask &lt;-<span class="st"> </span><span class="kw">move_and_resize</span>(<span class="dt">x =</span> mask, <span class="dt">mask =</span> mask,</a>
-<a class="sourceLine" id="cb21-13" data-line-number="13">                             <span class="dt">xy =</span> <span class="kw">c</span>(<span class="fl">564922.8</span>, <span class="dv">6184225</span>), <span class="dt">k =</span> <span class="fl">0.1</span> )</a>
-<a class="sourceLine" id="cb21-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb21-15" data-line-number="15"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">1.2</span>, <span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb21-16" data-line-number="16"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(com31), <span class="dt">bg =</span> <span class="st">&quot;cornsilk&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;lightblue4&quot;</span>, </a>
-<a class="sourceLine" id="cb21-17" data-line-number="17">     <span class="dt">border =</span> <span class="st">&quot;lightblue2&quot;</span>)</a>
-<a class="sourceLine" id="cb21-18" data-line-number="18"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(minimask), <span class="dt">col =</span> <span class="st">&quot;cornsilk2&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>,  <span class="dt">add =</span> T)</a>
-<a class="sourceLine" id="cb21-19" data-line-number="19"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(minidep76), <span class="dt">col =</span> <span class="st">&quot;grey70&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>,  <span class="dt">add=</span>T)</a>
-<a class="sourceLine" id="cb21-20" data-line-number="20"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(minidep76[minidep76<span class="op">$</span>INSEE_DEP <span class="op">==</span><span class="st">&quot;31&quot;</span>, ]), </a>
-<a class="sourceLine" id="cb21-21" data-line-number="21">     <span class="dt">col =</span> <span class="st">&quot;lightblue4&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>,  <span class="dt">add=</span>T)</a>
-<a class="sourceLine" id="cb21-22" data-line-number="22"><span class="kw">layoutLayer</span>(<span class="st">&quot;Le département Haute-Garonne&quot;</span>, </a>
-<a class="sourceLine" id="cb21-23" data-line-number="23">            <span class="dt">author =</span> <span class="st">&quot;ADMIN EXPRESS COG édition 2019, IGN&quot;</span>,</a>
-<a class="sourceLine" id="cb21-24" data-line-number="24">            <span class="dt">sources =</span> <span class="st">&quot;T. Giraud, 2020&quot;</span>, <span class="dt">scale =</span> <span class="dv">10</span>, </a>
-<a class="sourceLine" id="cb21-25" data-line-number="25">            <span class="dt">horiz =</span> F, <span class="dt">posscale =</span> <span class="st">&quot;bottomleft&quot;</span>, <span class="dt">south =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 </div>
 </div>
