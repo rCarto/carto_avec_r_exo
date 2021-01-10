@@ -67,12 +67,23 @@ projetée ? Si ce n'est pas le cas, transformez la couche des communes dans la
 projection française (Lambert 93, EPSG : 2154) avec la fonction 
 `st_transform()`. 
 
+
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+
+```
+
+
+
 ```{r}
 library(sf)
 occ_raw <- st_read(dsn = "data/Occitanie.gpkg", stringsAsFactors = FALSE)
 st_crs(occ_raw)
 occ <- st_transform(x = occ_raw, crs = 2154)
 ```
+
+
 
 
 ## Réaliser une sélection par attributs
