@@ -122,7 +122,7 @@ de Toulouse avec `st_buffer()`. Quel est le code INSEE de la commune de
 Toulouse?
 
 ```{r}
-toulouse <- com31[com31$INSEE_COM == "31555",]
+toulouse <- com31[com31$INSEE_COM == "31555", ]
 toulouse_buffer <- st_buffer(toulouse, 10000)
 plot(st_geometry(com31), lwd = .5)
 plot(st_geometry(toulouse), col = "darkblue", add = TRUE)
@@ -178,12 +178,6 @@ plot(st_geometry(dep76), col = NA, border = "grey50", add = TRUE)
 ```
 
 
-
-
-```{r setup2, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-
-```
 
 
 
@@ -249,8 +243,16 @@ plot(com31["dist_pref"], main = "Distance à la préfecture (en mètres)",
      key.pos = 1,key.width = .15, key.length = .75, graticule = TRUE,
      reset = FALSE)
 plot(st_geometry(pref), pch = 20, col = "red", add = TRUE )
+
 ```
 
+
+
+
+```{r setup2, include=FALSE, eval =TRUE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+
+```
 
 
 
