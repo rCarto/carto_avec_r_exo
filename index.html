@@ -1604,7 +1604,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Cartographie avec R</h1>
 <h4 class="author">Timothée Giraud<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> &amp; Hugues Pecout<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h4>
-<h4 class="date">10 janvier 2021</h4>
+<h4 class="date">11 janvier 2021</h4>
 
 </div>
 
@@ -1641,6 +1641,38 @@ Dans RStudio créez un projet et nommé le <strong>exercice</strong>. Il s’agi
 <li>Chargez la couche géographique des communes d’Occitanie en utilisant le package <code>sf</code> et la fonction <code>st_read()</code>.</li>
 <li>Vérifiez le système de projection avec <code>st_crs()</code>. S’agit-il de données projetée ? Si ce n’est pas le cas, transformez la couche des communes dans la projection française (Lambert 93, EPSG : 2154) avec la fonction <code>st_transform()</code>.</li>
 </ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div>
+<pre><code>## Linking to GEOS 3.7.1, GDAL 3.1.2, PROJ 7.1.0</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>occ_raw <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">&quot;data/Occitanie.gpkg&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## Reading layer `Occitanie&#39; from data source `/home/tim/Documents/prz/carto_avec_r_exo/data/Occitanie.gpkg&#39; using driver `GPKG&#39;
+## Simple feature collection with 4454 features and 11 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -0.3271723 ymin: 42.33292 xmax: 4.845565 ymax: 45.04557
+## geographic CRS: WGS 84</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(occ_raw)</span></code></pre></div>
+<pre><code>## Coordinate Reference System:
+##   User input: WGS 84 
+##   wkt:
+## GEOGCRS[&quot;WGS 84&quot;,
+##     DATUM[&quot;World Geodetic System 1984&quot;,
+##         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
+##             LENGTHUNIT[&quot;metre&quot;,1]]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS[&quot;geodetic latitude (Lat)&quot;,north,
+##             ORDER[1],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         AXIS[&quot;geodetic longitude (Lon)&quot;,east,
+##             ORDER[2],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     USAGE[
+##         SCOPE[&quot;unknown&quot;],
+##         AREA[&quot;World&quot;],
+##         BBOX[-90,-180,90,180]],
+##     ID[&quot;EPSG&quot;,4326]]</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>occ <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(<span class="at">x =</span> occ_raw, <span class="at">crs =</span> <span class="dv">2154</span>)</span></code></pre></div>
 </div>
 <div id="réaliser-une-sélection-par-attributs" class="section level2" number="1.3">
 <h2 number="1.3"><span class="header-section-number">1.3</span> Réaliser une sélection par attributs</h2>
@@ -1722,12 +1754,12 @@ N’oubliez pas de vérifier les projections utilisées avec <code>st_crs()</cod
 <h2 number="2.1"><span class="header-section-number">2.1</span> Préparer son environement de travail</h2>
 <p>Dans le même projet RStudio créez un deuxième script nommé <strong>exo2.R</strong>.<br />
 Votre projet RStudio doit maintenant être structuré de la manière suivante :</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">data</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>│   └── <span class="ex">base_cc_comparateur.xls</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>│   └── <span class="ex">Occitanie.gpkg</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">exo1.R</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">exo2.R</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>└── <span class="ex">exercice.Rproj</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>│   └── <span class="ex">base_cc_comparateur.xls</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>│   └── <span class="ex">Occitanie.gpkg</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">exo1.R</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">exo2.R</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>└── <span class="ex">exercice.Rproj</span></span></code></pre></div>
 </div>
 <div id="charger-des-données-statistiques" class="section level2" number="2.2">
 <h2 number="2.2"><span class="header-section-number">2.2</span> Charger des données statistiques</h2>
@@ -1780,11 +1812,11 @@ Votre projet RStudio doit maintenant être structuré de la manière suivante :<
 <h2 number="2.6"><span class="header-section-number">2.6</span> Évaluation</h2>
 <p>Vous devrez nous rendre pour le <strong>vendredi 28 février 2020</strong> un script permettant de construire ces huit cartes dans un fichier dont le nom est constitué de votre prénom et de votre nom (<strong>Prenom_Nom.R</strong>).<br />
 Votre script doit pouvoir fonctionner une fois inséré dans un projet RStudio structuré de la manière suivante :</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>│   ├── <span class="ex">base_cc_comparateur.xls</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>│   └── <span class="ex">Occitanie.gpkg</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">Prenom_Nom.R</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>└── <span class="ex">rendu.Rproj</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">data</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>│   ├── <span class="ex">base_cc_comparateur.xls</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>│   └── <span class="ex">Occitanie.gpkg</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>├── <span class="ex">Prenom_Nom.R</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>└── <span class="ex">rendu.Rproj</span></span></code></pre></div>
 <p>Vous serez évalués de la manière suivante :</p>
 <ul>
 <li>2 points par cartes (choix sémiologiques, traitement des données en amont…),</li>

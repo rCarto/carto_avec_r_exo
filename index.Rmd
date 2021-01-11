@@ -69,11 +69,6 @@ projection française (Lambert 93, EPSG : 2154) avec la fonction
 
 
 
-```{r, echo = F}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-
-```
-
 
 
 ```{r}
@@ -84,6 +79,11 @@ occ <- st_transform(x = occ_raw, crs = 2154)
 ```
 
 
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+
+```
 
 
 ## Réaliser une sélection par attributs
