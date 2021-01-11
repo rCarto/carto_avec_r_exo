@@ -109,7 +109,7 @@ sommes des populations communales.
 
 ```{r}
 reg76 <- st_union(occ)
-dep76 <- aggregate(occ["POPULATION"], by = list(occ$INSEE_DEP), sum)
+dep76 <- aggregate(occ[,"POPULATION"], by = list(occ$INSEE_DEP), sum)
 plot(st_geometry(occ), col = "lightblue1", border = "white", lwd = .5)
 plot(st_geometry(dep76), col = NA, border = "lightblue2", lwd = 1, add = TRUE)
 plot(reg76, col = NA, border = "lightblue3", lwd = 2, add = TRUE)
@@ -130,6 +130,14 @@ plot(st_geometry(toulouse_buffer), col = NA, lwd = 3, border = "red",
      add = TRUE)
 
 ```
+
+
+
+```{r, echo = F}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+
+```
+
 
 
 ## Réaliser un sélection par localisation
@@ -170,11 +178,6 @@ plot(st_geometry(toulouse), col = "darkblue", border = "black", lwd = 1,
 plot(st_geometry(toulouse_buffer), col = NA, border = "black", lwd = 2, 
      lty = 2, add = TRUE)
 plot(st_geometry(dep76), col = NA, border = "grey50", add = TRUE)
-```
-
-```{r, echo = F}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-
 ```
 
 ## Créer une couche de points 
