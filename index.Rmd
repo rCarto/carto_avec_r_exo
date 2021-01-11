@@ -249,12 +249,6 @@ plot(st_geometry(pref), pch = 20, col = "red", add = TRUE )
 
 
 
-```{r setup2, include=FALSE, eval =TRUE}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-
-```
-
-
 
 ## Extraire des données OpenStreetMap
 
@@ -279,13 +273,28 @@ res.sf <- osmdata_sf(res)
 res.sf.pts  <- res.sf$osm_points[!is.na(res.sf$osm_points$amenity),]
 resto <- st_transform(res.sf.pts, st_crs(com46))
 resto <- st_intersection(resto, st_geometry(com46))
+
 ```
+
+
+
+
 
 ```{r, nm=FALSE}
 # Affichage des restaurants
 plot(st_geometry(com46), col="darkseagreen3", border="darkseagreen4")
 plot(st_geometry(resto), add=TRUE, pch=20, col = "#330A5FFF", cex = 0.5)
 
+```
+
+
+
+```{r setup2, include=FALSE, eval =TRUE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+```
+
+
+```{r, nm=FALSE}
 # Compter les restaurants par communes
 inter <- st_intersects(x = com46, y = resto)
 com46$nresto <- sapply(inter, length)
