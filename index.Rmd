@@ -385,9 +385,6 @@ plot(st_geometry(com31))
 ```
  
 
-```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-```
 
 
 ## Réaliser une jointure
@@ -403,6 +400,9 @@ com31 <- merge(com31, occ_df, by.x = "INSEE_COM", by.y = "CODGEO", all.x = TRUE)
 head(com31, 2)
 ```
 
+```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+```
 
 
 ## Réaliser des cartes thématiques
