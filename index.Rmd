@@ -302,9 +302,7 @@ plot(st_geometry(com46noresto), col = 'red', add = TRUE)
 plot(st_geometry(resto), add=TRUE, pch=20, col = "blue", cex = 1)
 ```
 
-```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-```
+
 
 
 ```{r, nm=FALSE}
@@ -324,6 +322,9 @@ plot(st_geometry(resto), add=TRUE, pch=20, col = "red", cex = 1)
 
 ```
 
+```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+```
 
 *** 
 
@@ -404,7 +405,6 @@ head(com31, 2)
 
 
 
-
 ## Réaliser des cartes thématiques
 
 Réalisez huit cartes thématiques finalisées.   
@@ -450,7 +450,7 @@ Néanmoins l'utilisation d'autres packages comme `ggplot2` ou `tmap` est possibl
 
 ## Évaluation
 
-Vous devrez nous rendre pour le **vendredi 28 février 2020** un script permettant 
+Vous devrez nous rendre pour le **xx février 2020** un script permettant 
 de construire ces huit cartes dans un fichier dont le nom est constitué de votre 
 prénom et de votre nom (**Prenom_Nom.R**).  
 Votre script doit pouvoir fonctionner une fois inséré dans un projet RStudio
@@ -461,7 +461,7 @@ structuré de la manière suivante :
 │   ├── base_cc_comparateur.xls
 │   └── Occitanie.gpkg
 ├── Prenom_Nom.R
-└── rendu.Rproj
+└── exercice.Rproj
 ```
 
 Vous serez évalués de la manière suivante : 
