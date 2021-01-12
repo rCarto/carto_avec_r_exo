@@ -400,9 +400,6 @@ com31 <- merge(com31, occ_df, by.x = "INSEE_COM", by.y = "CODGEO", all.x = TRUE)
 head(com31, 2)
 ```
 
-```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-```
 
 
 ## Réaliser des cartes thématiques
@@ -415,6 +412,24 @@ nécessaires leur compréhension (titre, légende, sources...)
 Parmi ces huits cartes deux échelles différentes (échelle de la région, échelle 
 d'un département) et deux découpages territoriaux différents (les communes, les 
 départements) doivent être utilisés.
+
+ex:
+```{r}
+par(mar = c(0,0,1.2,0), mfrow = c(1,3))
+plot(st_geometry(occ), col = "lightblue", border = "lightblue4")
+layoutLayer(title = "Echelle : Region - Maillage : Communes", scale = FALSE)
+
+plot(st_geometry(dep76), col = "lightblue", border = "lightblue4")
+layoutLayer(title = "Echelle : Région - Maillage : Département", scale = FALSE)
+
+plot(st_geometry(com31), col = "lightblue", border = "lightblue4")
+layoutLayer(title = "Echelle : Département - Maillage : Communes", scale = FALSE)
+
+```
+
+
+
+
 
 
 Vous devez réaliser les huit types de cartes suivants :
