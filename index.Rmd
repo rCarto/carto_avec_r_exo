@@ -322,10 +322,6 @@ plot(st_geometry(resto), add=TRUE, pch=20, col = "red", cex = 1)
 
 ```
 
-```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
-knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
-```
-
 *** 
 
 # Cartographie thématique
@@ -388,6 +384,10 @@ plot(st_geometry(com31))
 
 ```
  
+
+```{r setup2, include=FALSE, eval =TRUE, cache = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, cache = TRUE, nm=TRUE)
+```
 
 
 ## Réaliser une jointure
